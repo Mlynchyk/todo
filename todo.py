@@ -1,3 +1,8 @@
+# Available arguments: 
+#   --add   - добавить todo элемент. Формат: --add "item name" 
+#   --del   - удалить элемент по индексу. Формат: --del X 
+#   --check - выбрать\отменить элемент по индексу. Формат: --check X 
+# 
 from curses import wrapper 
 import sys 
  
@@ -6,20 +11,25 @@ class ToDoItem:
         self.element = element 
         self.checkbox = checkbox 
      
-    def __str__(self) -> str: 
-        return f'[{self.checkbox}] {self.element}' 
+    def __str__(self, to_file = False) -> str: 
+        if to_file: 
+            return f'{self.checkbox}{self.element}' 
+        else: 
+            return f'[{self.checkbox}] {self.element}' 
  
-def read_file(file):         
-    our_list = [] 
-    filename = open(file, 'r') 
-    for line in filename.readlines(): 
-        our_list.append(ToDoItem(line[1:-1], line[0]))     
-    filename.close() 
-    return our_list 
+def read_file(filename): 
+    list = [] 
+    file = open(filename, 'r') 
+    for line in file.readlines(): 
+        list.append(ToDoItem(line[1:-1], line[0])) 
+    file.close() 
+    return list 
  
-def write_file(file, list): 
-    # open file, convert list of ToDoItem to list of strings, append to file 
-    return 
+def write_file(filename, list): 
+    f = open(filename, "w") 
+    for item in list: 
+        f.write(item.__str__(True) + '\n') 
+    f.close() 
  
 def show_list(stdscr, list): 
     y = 0 
@@ -30,13 +40,27 @@ def show_list(stdscr, list):
     stdscr.refresh() 
     stdscr.getkey() 
  
+#def add_item(args): 
+     
 def parse_args(args): 
+    FILE_NAME = "todo.txt" 
+    # TODO: move this code to separate function 
     if args[1] == '--add': 
-        print('add') 
+        #add_item(args[2]) 
+        list = read_file(FILE_NAME) 
+        list.append(ToDoItem(args[2], " ")) 
+        write_file(FILE_NAME, list)  
         return 
-    elif args[1] == '--del': 
-        print('del') 
-        return 
+    # elif args[1] == '--del': 
+    #     read_file(FILE_NAME) 
+    #     list.pop(args[2]) 
+    #     write_file(FILE_NAME)  
+    #     return 
+    # elif args[1] == '--check': 
+    #     read_file(FILE_NAME) 
+    #     list[args[2]] = 'v'+list[args[2]].__str__() 
+    #     write_file(FILE_NAME)   
+    #     return 
      
 def main(stdscr): 
     if len(sys.argv) < 2: 
