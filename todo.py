@@ -40,13 +40,17 @@ def show_list(stdscr, list):
     stdscr.refresh() 
     stdscr.getkey() 
  
-def add_item(el: str): 
+def add_item(el: str):  
     list = read_file(FILE_NAME) 
     list.append(ToDoItem(el, " "))   
     write_file(FILE_NAME, list)  
-    return 
+    
 
-
+def del_item(index: int) : 
+    list = read_file(FILE_NAME) 
+    list.pop(index) 
+    write_file(FILE_NAME, list)  
+    return
     
 FILE_NAME = "todo.txt"     
 def parse_args(args): 
@@ -54,11 +58,10 @@ def parse_args(args):
     # TODO: move this code to separate function 
     if args[1] == '--add': 
         add_item(args[2])
+        
     elif args[1] == '--del': 
-        list = read_file(FILE_NAME) 
-        list.pop(int(args[2])) 
-        write_file(FILE_NAME, list)  
-        return
+        del_item(int(args[2]))
+        
     elif args[1] == '--check': 
         list = read_file(FILE_NAME)
         el = list[int(args[2])] 
