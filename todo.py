@@ -50,7 +50,17 @@ def del_item(index: int) :
     list = read_file(FILE_NAME) 
     list.pop(index) 
     write_file(FILE_NAME, list)  
-    return
+
+
+def check_item(index: int):
+    list = read_file(FILE_NAME)
+    el = list[index] 
+    if el.checkbox == "v":
+        el.checkbox = " " 
+    else:
+        el.checkbox = "v" 
+    write_file(FILE_NAME, list)   
+    
     
 FILE_NAME = "todo.txt"     
 def parse_args(args): 
@@ -63,14 +73,7 @@ def parse_args(args):
         del_item(int(args[2]))
         
     elif args[1] == '--check': 
-        list = read_file(FILE_NAME)
-        el = list[int(args[2])] 
-        if el.checkbox == "v":
-            el.checkbox = " " 
-        else:
-            el.checkbox = "v" 
-        write_file(FILE_NAME, list)   
-        return 
+        check_item(int(args[2]))
      
 def main(stdscr): 
     if len(sys.argv) < 2: 
