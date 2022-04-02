@@ -51,7 +51,6 @@ def parse_args(args):
     
     # TODO: move this code to separate function 
     if args[1] == '--add': 
-        #add_item(args[2]) 
         list = read_file(FILE_NAME) 
         list.append(ToDoItem(args[2], " ")) 
         write_file(FILE_NAME, list)  
@@ -61,11 +60,15 @@ def parse_args(args):
         list.pop(int(args[2])) 
         write_file(FILE_NAME, list)  
         return
-    # elif args[1] == '--check': 
-    #     read_file(FILE_NAME) 
-    #     list[args[2]] = 'v'+list[args[2]].__str__() 
-    #     write_file(FILE_NAME)   
-    #     return 
+    elif args[1] == '--check': 
+        list = read_file(FILE_NAME)
+        el = list[int(args[2])] 
+        if el.checkbox == "v":
+            el.checkbox = " " 
+        else:
+            el.checkbox = "v" 
+        write_file(FILE_NAME, list)   
+        return 
      
 def main(stdscr): 
     if len(sys.argv) < 2: 
